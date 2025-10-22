@@ -3,6 +3,7 @@
 
 #include "imagenes.h"
 
+#define MAX_MEDIAN_SLIDER 140
 suavizados::suavizados(int num_foto, int num_tipo, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::suavizados)
@@ -13,6 +14,12 @@ suavizados::suavizados(int num_foto, int num_tipo, QWidget *parent) :
     tipo= num_tipo;
     if (parent)
         move(parent->x()+DESP_X_HIJO, parent->y()+DESP_Y_HIJO);
+    if (num_tipo == 3){
+        ui->horizontalSlider_2->setEnabled(false);
+        ui->spinBox_2->setEnabled(false);
+        ui->horizontalSlider->setMaximum(MAX_MEDIAN_SLIDER);
+        ui->spinBox->setMaximum(MAX_MEDIAN_SLIDER);
+    }
 }
 
 suavizados::~suavizados()

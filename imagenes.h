@@ -40,7 +40,7 @@ struct ventana {
 //    Enumerado con los distintos tipos posibles de herramientas
 //    que se pueden usar. Añadir nuevas aquí
 
-enum tipo_herramienta {HER_PUNTO, HER_LINEA, HER_RECTANGULO, HER_SELECCION};
+enum tipo_herramienta {HER_PUNTO, HER_LINEA, HER_RECTANGULO, HER_ELIPSE, HER_SELECCION};
 
 
 ///////////////////////////////////////////////////////////////////
@@ -158,6 +158,11 @@ void media_ponderada (int nf1, int nf2, int nueva, double peso);
 // y almacena el resultado en la posición nueva. Se aplica la fórmula:
 // nueva(x,y):= peso*nf1(x,y)+(1-peso)*nf2(x,y). La imagen nf2 se reescala al
 // tamaño de nf1
+
+
+void ver_histograma(int nfoto, int canal, int nres);
+// Calcular histograma de nfoto del canal dado y
+// guarda el resultado en nres
 
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1

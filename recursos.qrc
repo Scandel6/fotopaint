@@ -13,5 +13,6 @@
         <file>imagenes/seleccionar.png</file>
         <file>imagenes/icono.png</file>
         <file>imagenes/icono.ico</file>
+        <file>imagenes/histbase.png</file>
     </qresource>
 </RCC>
