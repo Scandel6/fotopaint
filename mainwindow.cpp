@@ -15,6 +15,8 @@ using namespace cv;
 #include "mediaponderada.h"
 #include "rotaravideo.h"
 #include "suavizados.h"
+#include "video.h"
+#include "ajustelineal.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos WEBP (*.webp);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -356,6 +358,55 @@ void MainWindow::on_actionGrises_triggered()
 {
     if(foto_activa() != -1){
         ver_histograma(foto_activa(), 3, primera_libre()); // 0, 1, 2, 3 (grises)
+    }
+}
+
+
+void MainWindow::on_actionRojo_triggered()
+{
+    if(foto_activa() != -1){
+        ver_histograma(foto_activa(), 2, primera_libre()); // 2 rojo
+    }
+}
+
+
+void MainWindow::on_actionVerde_triggered()
+{
+    if(foto_activa() != -1){
+        ver_histograma(foto_activa(), 1, primera_libre()); // 1 verde
+    }
+}
+
+
+void MainWindow::on_actionAzul_triggered()
+{
+    if(foto_activa() != -1){
+        ver_histograma(foto_activa(), 0, primera_libre()); // 0 azul
+    }
+}
+
+
+void MainWindow::on_actionCopiar_a_nueva_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1){
+        copiar_a_nueva(foto_activa(), primera_libre());
+    }
+}
+
+
+void MainWindow::on_actionCapturar_de_c_mara_triggered()
+{
+    if(primera_libre() != -1){
+        capturar_de_camara(primera_libre());
+    }
+}
+
+
+void MainWindow::on_actionAjuste_lineal_del_histograma_triggered()
+{
+    if (foto_activa() != -1 ){
+        AjusteLineal al(foto_activa(), this);
+        al.exec();
     }
 }
 

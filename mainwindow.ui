@@ -378,6 +378,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionNueva_imagen"/>
     <addaction name="actionAbrir_imagen"/>
+    <addaction name="actionCapturar_de_c_mara"/>
     <addaction name="separator"/>
     <addaction name="actionGuardar"/>
     <addaction name="actionGuardar_como"/>
@@ -406,6 +407,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionAzul"/>
     </widget>
     <addaction name="actionSeleccionar_todo"/>
+    <addaction name="actionCopiar_a_nueva"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
     <addaction name="menuVer_histograma"/>
@@ -433,6 +435,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionRotar_91"/>
     </widget>
     <addaction name="actionBrillo_contraste"/>
+    <addaction name="actionAjuste_lineal_del_histograma"/>
     <addaction name="actionInvertir"/>
     <addaction name="menuRotar"/>
     <addaction name="actionMedia_ponderada"/>
@@ -645,6 +648,21 @@ p, li { white-space: pre-wrap; }
   <action name="actionAzul">
    <property name="text">
     <string>Azul</string>
+   </property>
+  </action>
+  <action name="actionCopiar_a_nueva">
+   <property name="text">
+    <string>Copiar a nueva</string>
+   </property>
+  </action>
+  <action name="actionCapturar_de_c_mara">
+   <property name="text">
+    <string>Capturar de cámara...</string>
+   </property>
+  </action>
+  <action name="actionAjuste_lineal_del_histograma">
+   <property name="text">
+    <string>Ajuste lineal del histograma...</string>
    </property>
   </action>
  </widget>

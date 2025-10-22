@@ -616,67 +616,13 @@ void media_ponderada (int nf1, int nf2, int nueva, double peso)
 
 //---------------------------------------------------------------------------
 
-void ver_histograma2(int nfoto, int canal, int nres){
-
-    QImage imq= QImage(":/imagenes/histbase.png");
-    if (imq.isNull()){
-        qDebug("Error: No se pudo cargar la imagen");
-        return;
-    }
-    Mat img;
-    Mat temp_rgba(imq.height(), imq.width(), CV_8UC4, (void*)imq.constBits(), imq.bytesPerLine());
-    cvtColor(temp_rgba, img, COLOR_BGRA2BGR);
-
-    Mat plano_a_usar;
-    Scalar color_a_usar;
-    Mat roi_img = foto[nfoto].img(foto[nfoto].roi);
-
-    vector<Mat> planos_bgr;
-    split(roi_img, planos_bgr);
-
-    if (canal == 0) {
-        plano_a_usar = planos_bgr[0];
-        color_a_usar = CV_RGB(0, 0, 255); // Azul
-    } else if (canal == 1) {
-        plano_a_usar = planos_bgr[1];
-        color_a_usar = CV_RGB(0, 255, 0); // Verde
-    } else if (canal == 2) {
-        plano_a_usar = planos_bgr[2];
-        color_a_usar = CV_RGB(255, 0, 0); // Rojo
-    } else {
-        cvtColor(roi_img, plano_a_usar, COLOR_BGR2GRAY);
-        color_a_usar = CV_RGB(60, 60, 60); // Gris oscuro
-    }
-
-    Mat hist;
-    int canales[] = {0};
-    int bins[] = {256};
-    float rango[] = {0, 256};
-    const float* rangos[] = {rango};
-
-    calcHist(&plano_a_usar, 1, canales, Mat(), hist, 1, bins, rangos);
-
-    normalize(hist, hist, 0, img.rows * 0.98, NORM_MINMAX);
-
-    for (int i= 0; i<256; i++){
-        qDebug("Celda %d: %g", i, hist.at<float>(i));
-        line(img, Point(i, img.rows),
-             Point(i, img.rows - cvRound(hist.at<float>(i))),
-             color_a_usar, 1);
-    }
-
-    crear_nueva(nres, img);
-}
-
-//---------------------------------------------------------------------------
-
 void ver_histograma(int nfoto, int canal, int nres){
 
     QImage imq= QImage(":/imagenes/histbase.png");
     Mat img(imq.height(),imq.width(),CV_8UC4,imq.scanLine(0));
     cvtColor(img, img, COLOR_RGBA2RGB);
-    namedWindow("Imagen", WINDOW_NORMAL);
-    imshow("Imagen", img);
+    // namedWindow("Imagen", WINDOW_NORMAL);
+    // imshow("Imagen", img);
     Mat gris;
     Mat hist;
     cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY); // Conversión a gris
@@ -684,12 +630,67 @@ void ver_histograma(int nfoto, int canal, int nres){
     int bins[1]= {256};
     float rango[2]= {0, 256};
     const float *rangos[]= {rango};
-    calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+
+    if (canal == 3)
+        calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+    else
+        calcHist(&foto[nfoto].img, 1, &canal, noArray(), hist, 1, bins, rangos);
+
+    double vmin, vmax;
+    minMaxLoc(hist, &vmin, &vmax);
+
     for (int i= 0; i<256; i++){
         qDebug("Celda %d: %g", i, hist.at<float>(i));
-        rectangle(img, Point(i,0), Point(i+1, hist.at<float>(i)), CV_RGB(0,0,0), -1);
+        rectangle(img, Point(3 + i * 391 / 256, 185), Point(3+ (i+1) * 391 / 256, 185 - hist.at<float>(i) * 182 / vmax),
+                  CV_RGB(canal == 2 ? 255: 0, canal == 1 ? 255 : 0, canal == 0 ? 255 : 0), -1);
     }
     crear_nueva(nres, img);
+}
+
+//---------------------------------------------------------------------------
+
+void copiar_a_nueva(int nfoto, int nres){
+    Mat nueva = foto[nfoto].img(foto[nfoto].roi).clone();
+    crear_nueva(nres, nueva);
+}
+
+//---------------------------------------------------------------------------
+
+void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar){
+    // TODO: Falla, hace que sea negro
+    // Convertir a grises
+    Mat gris, hist;
+    cvtColor(foto[nfoto].img, gris, COLOR_RGB2GRAY);
+
+    // Cálculo de histograma
+    int canales[1]= {0};
+    int bins[1]= {256};
+    float rango[2]= {0, 256};
+    const float *rangos[]= {rango};
+    calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+
+    // Buscar percentiles minimo y máximo
+    normalize(hist, hist, 100, 0, NORM_L1);
+    int m, M;
+    double acum;
+    for(m = 0, acum = 0; m < 256 && acum < pmin; m++)
+        acum += hist.at<float>(m);
+    for(M = 255, acum = 0; M >= 0 && acum < pmax; M--)
+        acum += hist.at<float>(M);
+    if (M <= m)
+        M = m + 1;
+
+    // Aplicar operación de estiramiento
+    double alfa = 255.0 / (M - m);
+    double beta = -m * alfa;
+
+    Mat res;
+    foto[nfoto].img.convertTo(res, CV_8UC3, beta);
+    imshow(foto[nfoto].nombre, res);
+    if (guardar){
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
 }
 
 //---------------------------------------------------------------------------

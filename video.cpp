@@ -117,3 +117,24 @@ void mostrar_camara (void)
 }
 
 //---------------------------------------------------------------------------
+
+void capturar_de_camara(int nres){
+    // VideoCapture cap("C:\OpenCV\OpenCV4.10.0G\samples\bin\vtest.avi");
+    VideoCapture cap(0);
+    if(cap.isOpened()) {
+        Mat frame;
+        int tecla = -1;
+
+        while(cap.read(frame) && (tecla = waitKey(1)) == -1){
+            imshow("Pulse una tecla para capturar (Esc salir)", frame);
+        }
+        if (!frame.empty() && tecla != 27){
+            crear_nueva(nres, frame);
+        }
+        destroyWindow("Pulse una tecla para capturar (Esc salir)");
+    } else {
+        cerr << "No se ha podido abrir la cámara";
+    }
+}
+
+//---------------------------------------------------------------------------
