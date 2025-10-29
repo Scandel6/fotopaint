@@ -657,10 +657,9 @@ void copiar_a_nueva(int nfoto, int nres){
 //---------------------------------------------------------------------------
 
 void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar){
-    // TODO: Falla, hace que sea negro
     // Convertir a grises
     Mat gris, hist;
-    cvtColor(foto[nfoto].img, gris, COLOR_RGB2GRAY);
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);
 
     // Cálculo de histograma
     int canales[1]= {0};
@@ -685,7 +684,7 @@ void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar){
     double beta = -m * alfa;
 
     Mat res;
-    foto[nfoto].img.convertTo(res, CV_8UC3, beta);
+    foto[nfoto].img.convertTo(res, CV_8UC3, alfa, beta);
     imshow(foto[nfoto].nombre, res);
     if (guardar){
         res.copyTo(foto[nfoto].img);
