@@ -21,9 +21,10 @@ AjusteLineal::~AjusteLineal()
 
 void AjusteLineal::on_horizontalSlider_valueChanged(int value)
 {
-    if (value + ui->horizontalSlider_2->value() > 100){
-        ui->horizontalSlider_2->setValue(100 - value);
-        ui->spinBox_2->setValue(100 - value);
+    int adjusted_value = ui->horizontalSlider_2->maximum() - value;
+    if (ui->horizontalSlider_2->value() > adjusted_value){
+        ui->horizontalSlider_2->setValue(adjusted_value);
+        ui->spinBox_2->setValue(adjusted_value);
     }
     ui->spinBox->setValue(value);
     if(ui->checkBox->isChecked()){
@@ -41,9 +42,10 @@ void AjusteLineal::on_spinBox_valueChanged(int arg1)
 
 void AjusteLineal::on_horizontalSlider_2_valueChanged(int value)
 {
-    if (value + ui->horizontalSlider->value() > 100){
-        ui->horizontalSlider->setValue(100 - value);
-        ui->spinBox->setValue(100 - value);
+    int adjusted_value = ui->horizontalSlider->maximum() - value;
+    if (ui->horizontalSlider->value() > adjusted_value){
+        ui->horizontalSlider->setValue(adjusted_value);
+        ui->spinBox->setValue(adjusted_value);
     }
     ui->spinBox_2->setValue(value);
 
