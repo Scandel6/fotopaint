@@ -70,6 +70,7 @@ private slots:
     void on_actionCopiar_a_nueva_triggered();
     void on_actionCapturar_de_c_mara_triggered();
     void on_actionAjuste_lineal_del_histograma_triggered();
+    void on_actionBajorrelieve_triggered();
 };
 
 extern MainWindow *w;

@@ -169,6 +169,9 @@ void copiar_a_nueva(int nfoto, int nres);
 void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar = false);
 // Operación de ajuste lineal del histograma con percentiles pmin y pmax
 
+void ver_bajorrelieve(int nfoto, int nres, double grado, double angulo, int tam, int textura, bool guardar = false);
+//
+
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1
 

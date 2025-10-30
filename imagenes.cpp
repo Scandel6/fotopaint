@@ -694,6 +694,40 @@ void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar){
 
 //---------------------------------------------------------------------------
 
+void ver_bajorrelieve(int nfoto, int nres, double grado, double angulo, int tam, int textura, bool guardar){
+
+    QString nombres[4] = {":/imagenes/arena.jpg", ":/imagenes/gris.jpg", ":/imagenes/cielo.jpg", ":/imagenes/madera.jpg"};
+
+    // Generación de fondo
+    QImage imq= QImage(nombres[textura]);
+    Mat img(imq.height(),imq.width(),CV_8UC4,imq.scanLine(0));
+    cvtColor(img, img, COLOR_RGBA2RGB);
+
+    double factor = grado/pow(4, tam - 3); // normalizado por el tamaño de Sobel
+
+    // Generación del bajorrelieve
+    Mat gris, sobel, rotada;
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);
+    rotar_angulo(gris, rotada, angulo, 1.0, 1);
+    Sobel(rotada, sobel, -1, 1, 0, tam, factor, 128, BORDER_REFLECT);
+    rotar_angulo(sobel, rotada, -angulo, 1.0, 0);
+    Rect roi((rotada.cols - gris.cols) / 2, (rotada.rows - gris.rows) / 2, gris.cols, gris.cols);
+    gris = rotada(roi);
+
+    // Mezclar fondo y bajorrelieve
+    cvtColor(gris, gris, COLOR_GRAY2BGR); // Hacer que tenga los mismos canales que img
+    resize(img, img, gris.size(), 0, 0, INTER_CUBIC); // Hacer que tengan el mismo tamaño
+    addWeighted(img, 1.0, gris, 1.0, -128, img);
+
+    imshow("Bajorrelieve", img);
+
+    if (guardar){
+        crear_nueva(nres, img);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 string Lt1(string cadena)
 {
     QString temp= QString::fromUtf8(cadena.c_str());
