@@ -18,6 +18,7 @@ SOURCES += main.cpp\
     ajustelineal.cpp \
     bajorrelieve.cpp \
     brillocontrastegamma.cpp \
+    capturardevideo.cpp \
     mainwindow.cpp \
     imagenes.cpp \
     dialognueva.cpp \
@@ -32,6 +33,7 @@ HEADERS  += mainwindow.h \
     ajustelineal.h \
     bajorrelieve.h \
     brillocontrastegamma.h \
+    capturardevideo.h \
     imagenes.h \
     dialognueva.h \
     suavizados.h \
@@ -45,6 +47,7 @@ FORMS    += mainwindow.ui \
     ajustelineal.ui \
     bajorrelieve.ui \
     brillocontrastegamma.ui \
+    capturardevideo.ui \
     dialognueva.ui \
     suavizados.ui \
     rotaravideo.ui \

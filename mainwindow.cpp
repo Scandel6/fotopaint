@@ -17,6 +17,7 @@ using namespace cv;
 #include "suavizados.h"
 #include "video.h"
 #include "ajustelineal.h"
+#include "capturardevideo.h"
 
 #include <Bajorrelieve.h>
 
@@ -433,5 +434,19 @@ void MainWindow::on_actionArco_ris_triggered()
 {
     herr_actual = HER_ARCOIRIS;
     ui->toolButton_9->setChecked(true);
+}
+
+
+void MainWindow::on_actionCapturar_de_v_deo_triggered()
+{
+    if(primera_libre() != -1) {
+        // TODO: Añadir filtro de archivo
+        QString nombre = QFileDialog::getOpenFileName();
+        if (!nombre.isEmpty()){
+            CapturarDeVideo cv(nombre.toLatin1().data(), this);
+            if (cv.isOpened())
+                cv.exec();
+        }
+    }
 }
 
