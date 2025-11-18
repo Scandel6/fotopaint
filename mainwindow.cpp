@@ -8,7 +8,7 @@
 using namespace cv;
 
 #include "acercade.h"
-#include "brillocontraste.h"
+#include "brillocontrastegamma.h"
 #include "dialognueva.h"
 #include "imagenes.h"
 #include "mediadevideo.h"
@@ -420,5 +420,18 @@ void MainWindow::on_actionBajorrelieve_triggered()
         Bajorrelieve dialog(foto_activa(), primera_libre(), this);
         dialog.exec();
     }
+}
+
+
+void MainWindow::on_toolButton_9_clicked()
+{
+    herr_actual = HER_ARCOIRIS;
+}
+
+
+void MainWindow::on_actionArco_ris_triggered()
+{
+    herr_actual = HER_ARCOIRIS;
+    ui->toolButton_9->setChecked(true);
 }
 

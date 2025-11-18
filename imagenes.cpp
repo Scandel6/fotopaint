@@ -32,6 +32,7 @@ static int numpos= 0; // Número actual en el orden de posición de las ventanas
 ///////////////////////////////////////////////////////////////////
 
 void callback (int event, int x, int y, int flags, void *_nfoto);
+Scalar color_arcoiris();
 
 //---------------------------------------------------------------------------
 
@@ -249,11 +250,11 @@ void cb_close (int factual)
 
 //---------------------------------------------------------------------------
 
-void cb_punto (int factual, int x, int y)
+void cb_punto (int factual, int x, int y, Scalar color)
 {
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
-        circle(im, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
+        circle(im, Point(x, y), radio_pincel, color, -1, LINE_AA);
     else {
         int tam = radio_pincel + difum_pincel;
         int posx = tam, posy = tam;
@@ -281,9 +282,9 @@ void cb_punto (int factual, int x, int y)
 
         Mat trozo = im(roi);
 
-        Mat res(trozo.size(), im.type(), color_pincel);
+        Mat res(trozo.size(), im.type(), color);
         Mat cop(roi.size(), im.type(), CV_RGB(0,0,0));
-        circle(cop, Point(posx, posy), radio_pincel, color_pincel, -1,  radio_pincel*2+1);
+        circle(cop, Point(posx, posy), radio_pincel, color, -1,  radio_pincel*2+1);
         blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
         multiply(res, cop, res, 1.0/255.0);
         bitwise_not(cop, cop);
@@ -459,12 +460,20 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
     // 2.1. Herramienta PUNTO
     case HER_PUNTO:
         if (flags==EVENT_FLAG_LBUTTON && event!=EVENT_LBUTTONUP)
-            cb_punto(factual, x, y);
+            cb_punto(factual, x, y, color_pincel);
         else
             ninguna_accion(factual, x, y);
         break;
 
-        // 2.2. Herramienta LINEA
+    // 2.2. Herramienta ARCOIRIS
+    case HER_ARCOIRIS:
+        if (flags==EVENT_FLAG_LBUTTON && event!=EVENT_LBUTTONUP)
+            cb_punto(factual, x, y, color_arcoiris());
+        else
+            ninguna_accion(factual, x, y);
+        break;
+
+    // 2.3. Herramienta LINEA
     case HER_LINEA:
         if (event==EVENT_LBUTTONUP)
             cb_linea(factual, x, y);
@@ -474,15 +483,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-        // 2.3. Herramienta SELECCION
-    case HER_SELECCION:
-        if (event==EVENT_LBUTTONUP)
-            cb_seleccionar(factual, x, y);
-        else if (event==EVENT_MOUSEMOVE)
-            cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
-        break;
-
-        // 2.4. Herramienta RECTÁNGULO
+    // 2.4. Herramienta RECTÁNGULO
     case HER_RECTANGULO:
         if (event==EVENT_LBUTTONUP)
             cb_rectangulo(factual, x, y);
@@ -491,7 +492,8 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
         else
             ninguna_accion(factual, x, y);
         break;
-        // 2.5. Herramienta ELIPSE
+
+    // 2.5. Herramienta ELIPSE
     case HER_ELIPSE:
         if (event==EVENT_LBUTTONUP)
             cb_elipse(factual, x, y);
@@ -499,6 +501,14 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             cb_ver_elipse(factual, x, y);
         else
             ninguna_accion(factual, x, y);
+        break;
+
+    // 2.6. Herramienta SELECCION
+    case HER_SELECCION:
+        if (event==EVENT_LBUTTONUP)
+            cb_seleccionar(factual, x, y);
+        else if (event==EVENT_MOUSEMOVE)
+            cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
         break;
     }
     escribir_barra_estado();
@@ -728,6 +738,44 @@ void ver_bajorrelieve(int nfoto, int nres, double grado, double angulo, int tam,
     if (guardar){
         crear_nueva(nres, img);
     }
+}
+
+//---------------------------------------------------------------------------
+
+Scalar color_arcoiris() {
+    static int estado = 0;
+    static Scalar colorActual = CV_RGB(255, 0, 0);
+
+    int inc = 8;
+
+    switch (estado) {
+    case 0:
+        colorActual.val[1] += inc;
+        if(colorActual.val[1] >= 255) estado++;
+        break;
+    case 1:
+        colorActual.val[2] -= inc;
+        if(colorActual.val[2] <= 0) estado++;
+        break;
+    case 2:
+        colorActual.val[0] += inc;
+        if(colorActual.val[0] >= 255) estado++;
+        break;
+    case 3:
+        colorActual.val[1] -= inc;
+        if(colorActual.val[1] <= 0) estado++;
+        break;
+    case 4:
+        colorActual.val[2] += inc;
+        if(colorActual.val[2] >= 255) estado++;
+        break;
+    case 5:
+        colorActual.val[0] -= inc;
+        if(colorActual.val[0] <= 0) estado = 0;
+        break;
+    }
+
+    return colorActual;
 }
 
 //---------------------------------------------------------------------------
