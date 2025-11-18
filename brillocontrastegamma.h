@@ -1,5 +1,5 @@
-#ifndef BRILLOCONTRASTE_H
-#define BRILLOCONTRASTE_H
+#ifndef BRILLOCONTRASTEGAMMA_H
+#define BRILLOCONTRASTEGAMMA_H
 
 #include <QDialog>
 
@@ -36,4 +36,4 @@ private slots:
     void on_horizontalSlider_3_valueChanged(int value);
 };
 
-#endif // BRILLOCONTRASTE_H
+#endif // BRILLOCONTRASTEGAMMA_H

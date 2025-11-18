@@ -1,5 +1,5 @@
-#include "brillocontraste.h"
-#include "ui_brillocontraste.h"
+#include "brillocontrastegamma.h"
+#include "ui_brillocontrastegamma.h"
 
 #include "imagenes.h"
 
