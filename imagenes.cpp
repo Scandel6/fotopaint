@@ -565,11 +565,15 @@ void rotar_exacto (int nfoto, int nres, int grado)
 
 //---------------------------------------------------------------------------
 
-void ver_brillo_contraste (int nfoto, double suma, double prod, bool guardar)
+void ver_brillo_contraste_gamma (int nfoto, double suma, double prod, double gamma, bool guardar)
 {
     assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
     Mat img;
     foto[nfoto].img.convertTo(img, CV_8UC3, prod, suma);
+    Mat img32f;
+    img.convertTo(img32f, CV_32FC3, 1.0/255.0);
+    pow(img32f, 1.0/gamma, img32f); // como la formula
+    img32f.convertTo(img, CV_8UC3, 255);
     imshow(foto[nfoto].nombre, img);
     if (guardar) {
         img.copyTo(foto[nfoto].img);

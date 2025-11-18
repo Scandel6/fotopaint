@@ -12,6 +12,7 @@ brillocontraste::brillocontraste(int numfoto, QWidget *parent) :
     nfoto= numfoto;
     suma= 0.0;
     multiplica= 1.0;
+    gamma = 1.0;
     if (parent)
         move(parent->x()+DESP_X_HIJO, parent->y()+DESP_Y_HIJO);
 }
@@ -43,8 +44,9 @@ void brillocontraste::actualizar()
     else
         multiplica= 1.0+contraste/100;
     suma= (multiplica+1)*brillo/2-128*(multiplica-1);
+    gamma = ui->horizontalSlider_3->value() / 100.0;
     if (ui->checkBox->isChecked())
-        ver_brillo_contraste(nfoto, suma, multiplica, false);
+        ver_brillo_contraste_gamma(nfoto, suma, multiplica, gamma, false);
     else
         mostrar(nfoto);
 }
@@ -79,10 +81,23 @@ void brillocontraste::on_checkBox_stateChanged(int arg1)
 void brillocontraste::on_brillocontraste_accepted()
 {
     actualizar();
-    ver_brillo_contraste(nfoto, suma, multiplica, true);
+    ver_brillo_contraste_gamma(nfoto, suma, multiplica, gamma, true);
 }
 
 void brillocontraste::on_brillocontraste_rejected()
 {
     mostrar(nfoto);
 }
+
+void brillocontraste::on_spinBox_3_valueChanged(int arg1)
+{
+    ui->horizontalSlider_3->setValue(arg1);
+}
+
+
+void brillocontraste::on_horizontalSlider_3_valueChanged(int value)
+{
+    ui->spinBox_3->setValue(value);
+    actualizar();
+}
+

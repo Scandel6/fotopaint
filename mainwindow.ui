@@ -558,7 +558,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionBrillo_contraste">
    <property name="text">
-    <string>Brillo/Contraste...</string>
+    <string>Brillo/Contraste/Gamma...</string>
    </property>
   </action>
   <action name="actionInvertir">
