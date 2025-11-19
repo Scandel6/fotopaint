@@ -138,3 +138,66 @@ void capturar_de_camara(int nres){
 }
 
 //---------------------------------------------------------------------------
+
+void star_wars(int nfoto, string nombre, int nframes, double fps, int codec, vector<string> texto,
+               Scalar color, double escala, bool guardar){
+    VideoWriter wri;
+    if (guardar) {
+        wri.open(nombre, codec, fps, foto[nfoto].img.size());
+        if (!wri.isOpened()){
+            cerr << "No se ha podido abrir el vídeo Star Wars." << endl;
+            return;
+        }
+    }
+
+    int w_vent = 1000, h_vent = 1000;
+    int w_img = foto[nfoto].img.cols, h_img = foto[nfoto].img.rows;
+
+    Size s = getTextSize("Prueba", FONT_HERSHEY_DUPLEX, escala, escala * 1.5, NULL);
+
+    int h_line = s.height;
+    Size tamTexto(w_vent, 2 * h_vent + h_line * 1.5 * texto.size());
+
+    Mat imTexto(tamTexto, CV_8UC3, CV_RGB(0,0,0));
+    for(int i = 0; i < texto.size(); i++) {
+        putText(imTexto, texto[i], Point(0, h_vent + 1.5 * h_line * (i + 1)), FONT_HERSHEY_DUPLEX, escala, color, escala * 1.5);
+    }
+
+
+    Point2f ptorig[4] = {
+        Point2f(0, h_vent / 2),
+        Point2f(w_vent, h_vent/2),
+        Point2f(w_vent, h_vent /2 + h_vent),
+        Point2f(0, h_vent / 2 + h_vent)
+    };
+
+    Point2f ptdest[4] = {
+        Point2f(w_img * 0.45, 0),
+        Point2f(w_img * 0.55, 0),
+        Point2f(w_img * 1.1, h_img),
+        Point2f(-0.1 * w_img, h_img)
+    };
+
+    for (int i = 0; i < nframes; i++){
+        ptorig[0].y = double(imTexto.rows - h_vent) * i / nframes;
+        ptorig[1].y = ptorig[0].y;
+        ptorig[2].y = ptorig[0].y + h_vent;
+        ptorig[3].y = ptorig[2].y;
+
+        Mat M = getPerspectiveTransform(ptorig, ptdest);
+        Mat imTextPers;
+        warpPerspective(imTexto, imTextPers, M, foto[nfoto].img.size(), INTER_CUBIC);
+
+        Mat frame = foto[nfoto].img.clone();
+        imTextPers.copyTo(frame, imTextPers);
+
+        if (guardar)
+            wri.write(frame);
+
+        imshow("Star Wars", frame);
+
+        if (waitKey(1) != -1) return;
+    }
+}
+
+//---------------------------------------------------------------------------

@@ -22,6 +22,7 @@ SOURCES += main.cpp\
     mainwindow.cpp \
     imagenes.cpp \
     dialognueva.cpp \
+    starwars.cpp \
     suavizados.cpp \
     video.cpp \
     rotaravideo.cpp \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     capturardevideo.h \
     imagenes.h \
     dialognueva.h \
+    starwars.h \
     suavizados.h \
     video.h \
     rotaravideo.h \
@@ -49,6 +51,7 @@ FORMS    += mainwindow.ui \
     brillocontrastegamma.ui \
     capturardevideo.ui \
     dialognueva.ui \
+    starwars.ui \
     suavizados.ui \
     rotaravideo.ui \
     mediaponderada.ui \

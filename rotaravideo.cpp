@@ -41,7 +41,7 @@ void rotaravideo::on_rotaravideo_accepted()
         int codigocc;
         QString cad= ui->comboBox->currentText();
         if (cad=="DEFAULT")
-            codigocc= VideoWriter::fourcc('M','P','E','G');
+            codigocc= VideoWriter::fourcc('D','I','V','X');
         else {
             string cadena= cad.toLatin1().data();
             codigocc= VideoWriter::fourcc(cadena[0], cadena[1], cadena[2], cadena[3]);

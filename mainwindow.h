@@ -74,6 +74,7 @@ private slots:
     void on_toolButton_9_clicked();
     void on_actionArco_ris_triggered();
     void on_actionCapturar_de_v_deo_triggered();
+    void on_actionStar_Wars_triggered();
 };
 
 extern MainWindow *w;

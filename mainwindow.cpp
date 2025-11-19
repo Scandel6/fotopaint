@@ -18,6 +18,7 @@ using namespace cv;
 #include "video.h"
 #include "ajustelineal.h"
 #include "capturardevideo.h"
+#include "starwars.h"
 
 #include <Bajorrelieve.h>
 
@@ -447,6 +448,15 @@ void MainWindow::on_actionCapturar_de_v_deo_triggered()
             if (cv.isOpened())
                 cv.exec();
         }
+    }
+}
+
+
+void MainWindow::on_actionStar_Wars_triggered()
+{
+    if(foto_activa() != -1) {
+        StarWars sw(foto_activa(), this);
+        sw.exec();
     }
 }
 

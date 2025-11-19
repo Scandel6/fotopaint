@@ -35,4 +35,8 @@ void mostrar_camara (void);
 void capturar_de_camara(int nres);
 // Captura de la cámara y crea la imagen en nres
 
+void star_wars(int nfoto, string nombre, int nframes, double fps, int codec, vector<string> texto,
+               Scalar color, double escala, bool guardar = false);
+// Generar vídeo mostrando un texto de abajo hacia arriba.
+
 #endif // VIDEO_H
