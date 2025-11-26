@@ -20,6 +20,7 @@ using namespace cv;
 #include "capturardevideo.h"
 #include "starwars.h"
 #include "matsatlum.h"
+#include "inpaint.h"
 
 #include <Bajorrelieve.h>
 
@@ -468,6 +469,15 @@ void MainWindow::on_actionMatiz_Saturaci_n_Luminosidad_triggered()
         // ver_matiz_sat_lum(foto_activa(), radio_pincel * 2, difum_pincel / 50.0, 1.0);
         MatSatLum msl(foto_activa(), this);
         msl.exec();
+    }
+}
+
+
+void MainWindow::on_actionInpaint_triggered()
+{
+    if(foto_activa() != -1){
+        Inpaint ip(foto_activa(), this);
+        ip.exec();
     }
 }
 
