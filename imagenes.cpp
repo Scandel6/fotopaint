@@ -780,6 +780,33 @@ Scalar color_arcoiris() {
 
 //---------------------------------------------------------------------------
 
+void ver_matiz_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar){
+    Mat hls;
+    cvtColor(foto[nfoto].img, hls, COLOR_RGB2HLS_FULL);
+
+    Mat canales[3];
+    split(hls, canales);
+
+    // Evitar saturación y evitar que todo se vuelva rojo
+    Mat im16;
+    canales[0].convertTo(im16, CV_16S, 1, matiz);
+    bitwise_and(im16, Scalar(255), im16);
+    im16.convertTo(canales[0], CV_8U);
+
+    canales[1] *= lum;
+    canales[2] *=sat;
+
+    merge(canales, 3, hls);
+    Mat res;
+    cvtColor(hls, res, COLOR_HLS2BGR_FULL);
+    imshow(foto[nfoto].nombre, res);
+    if (guardar){
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
+}
+
+//---------------------------------------------------------------------------
 string Lt1(string cadena)
 {
     QString temp= QString::fromUtf8(cadena.c_str());

@@ -19,6 +19,7 @@ using namespace cv;
 #include "ajustelineal.h"
 #include "capturardevideo.h"
 #include "starwars.h"
+#include "matsatlum.h"
 
 #include <Bajorrelieve.h>
 
@@ -457,6 +458,16 @@ void MainWindow::on_actionStar_Wars_triggered()
     if(foto_activa() != -1) {
         StarWars sw(foto_activa(), this);
         sw.exec();
+    }
+}
+
+
+void MainWindow::on_actionMatiz_Saturaci_n_Luminosidad_triggered()
+{
+    if (foto_activa() != -1){
+        // ver_matiz_sat_lum(foto_activa(), radio_pincel * 2, difum_pincel / 50.0, 1.0);
+        MatSatLum msl(foto_activa(), this);
+        msl.exec();
     }
 }
 

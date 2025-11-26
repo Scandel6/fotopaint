@@ -466,6 +466,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionRotar_91"/>
     </widget>
     <addaction name="actionBrillo_contraste"/>
+    <addaction name="actionMatiz_Saturaci_n_Luminosidad"/>
     <addaction name="actionAjuste_lineal_del_histograma"/>
     <addaction name="actionInvertir"/>
     <addaction name="menuRotar"/>
@@ -716,6 +717,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionStar_Wars">
    <property name="text">
     <string>Star Wars...</string>
+   </property>
+  </action>
+  <action name="actionMatiz_Saturaci_n_Luminosidad">
+   <property name="text">
+    <string>Matiz/Saturación/Luminosidad...</string>
    </property>
   </action>
  </widget>

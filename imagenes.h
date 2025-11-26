@@ -173,6 +173,9 @@ void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar = false
 void ver_bajorrelieve(int nfoto, int nres, double grado, double angulo, int tam, int textura, bool guardar = false);
 //
 
+void ver_matiz_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar = false);
+// Ajuste de matiz/saturación/luminosidad
+
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1
 
