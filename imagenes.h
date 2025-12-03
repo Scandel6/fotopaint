@@ -171,10 +171,13 @@ void ver_ajuste_lineal(int nfoto, double pmin, double pmax, bool guardar = false
 // Operación de ajuste lineal del histograma con percentiles pmin y pmax
 
 void ver_bajorrelieve(int nfoto, int nres, double grado, double angulo, int tam, int textura, bool guardar = false);
-//
+// Operación de bajorrelieve de nfoto sobre una textura
 
 void ver_matiz_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar = false);
 // Ajuste de matiz/saturación/luminosidad
+
+void ver_perspectiva(int norig, int ndest, Point2f ptorig[4], Point2f ptdest[4], bool guardar = false);
+// Transformación de perspectiva
 
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1

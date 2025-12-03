@@ -21,6 +21,7 @@ using namespace cv;
 #include "starwars.h"
 #include "matsatlum.h"
 #include "inpaint.h"
+#include "perspectiva.h"
 
 #include <Bajorrelieve.h>
 
@@ -478,6 +479,31 @@ void MainWindow::on_actionInpaint_triggered()
     if(foto_activa() != -1){
         Inpaint ip(foto_activa(), this);
         ip.exec();
+    }
+}
+
+
+void MainWindow::on_actionPerspectiva_triggered()
+{
+    if(foto_activa() != -1) {
+        // Point2f no[4], nd[4];
+        // int w = foto[0].img.cols;
+        // int h = foto[0].img.rows;
+        // no[0] = Point2f(0,0);
+        // no[1] = Point2f(w,0);
+        // no[2] = Point2f(w,h);
+        // no[3] = Point2f(0,h);
+
+        // w = foto[1].img.cols;
+        // h = foto[1].img.rows;
+        // nd[0] = Point2f(w*0.4,h*0.1);
+        // nd[1] = Point2f(w* 0.65,h*0.2);
+        // nd[2] = Point2f(w*0.95,h*0.9);
+        // nd[3] = Point2f(w*0.05,h*0.8);
+
+        // ver_perspectiva(0, 1, no, nd);
+        Perspectiva pe(this);
+        pe.exec();
     }
 }
 
