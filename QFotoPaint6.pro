@@ -25,6 +25,7 @@ SOURCES += main.cpp\
     dialognueva.cpp \
     matsatlum.cpp \
     perspectiva.cpp \
+    pincharestirar.cpp \
     starwars.cpp \
     suavizados.cpp \
     video.cpp \
@@ -43,6 +44,7 @@ HEADERS  += mainwindow.h \
     inpaint.h \
     matsatlum.h \
     perspectiva.h \
+    pincharestirar.h \
     starwars.h \
     suavizados.h \
     video.h \
@@ -60,6 +62,7 @@ FORMS    += mainwindow.ui \
     inpaint.ui \
     matsatlum.ui \
     perspectiva.ui \
+    pincharestirar.ui \
     starwars.ui \
     suavizados.ui \
     rotaravideo.ui \

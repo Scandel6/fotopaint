@@ -78,6 +78,8 @@ private slots:
     void on_actionMatiz_Saturaci_n_Luminosidad_triggered();
     void on_actionInpaint_triggered();
     void on_actionPerspectiva_triggered();
+    void on_actionEscala_de_color_triggered();
+    void on_actionPinchar_estirar_triggered();
 };
 
 extern MainWindow *w;

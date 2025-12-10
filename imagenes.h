@@ -179,6 +179,12 @@ void ver_matiz_sat_lum(int nfoto, int matiz, double sat, double lum, bool guarda
 void ver_perspectiva(int norig, int ndest, Point2f ptorig[4], Point2f ptdest[4], bool guardar = false);
 // Transformación de perspectiva
 
+void escala_color(int nfoto, int nres);
+// Convertir la imagen de entrada a escala del color del pincel.
+
+void ver_pinchar_estirar(int nfoto, int nres, int cx, int cy, double grado, double radio, bool guardar = false);
+// Efecto de pinchar estirar
+
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1
 

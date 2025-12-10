@@ -472,6 +472,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuRotar"/>
     <addaction name="actionMedia_ponderada"/>
     <addaction name="actionPerspectiva"/>
+    <addaction name="actionEscala_de_color"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -740,6 +741,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionPerspectiva">
    <property name="text">
     <string>Perspectiva...</string>
+   </property>
+  </action>
+  <action name="actionEscala_de_color">
+   <property name="text">
+    <string>Escala de color</string>
    </property>
   </action>
  </widget>

@@ -787,7 +787,7 @@ void ver_matiz_sat_lum(int nfoto, int matiz, double sat, double lum, bool guarda
     Mat canales[3];
     split(hls, canales);
 
-    // Evitar saturación y evitar que todo se vuelva rojo
+    // Evitar saturación y que todo se vuelva rojo
     Mat im16;
     canales[0].convertTo(im16, CV_16S, 1, matiz);
     bitwise_and(im16, Scalar(255), im16);
@@ -826,6 +826,73 @@ void ver_perspectiva(int norig, int ndest, Point2f ptorig[4], Point2f ptdest[4],
         circle(res, ptdest[i], 6, CV_RGB(0, 255, 0), -1);
     }
     imshow("Perspectiva", res);
+}
+
+//---------------------------------------------------------------------------
+
+void escala_color(int nfoto, int nres){
+    Mat gris;
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);
+    cvtColor(gris, gris, COLOR_GRAY2BGR);
+    Mat lut(256, 1, CV_8UC3);
+    int vb = color_pincel.val[0];
+    int vg = color_pincel.val[1];
+    int vr = color_pincel.val[2];
+
+    int vgris = (vb + vg + vr) / 3;
+
+    for (int A = 0; A < 256; A++){
+        if (A < vgris){
+            lut.at<Vec3b>(A) = Vec3b(vb * A /vgris,
+                                     vg * A /vgris,
+                                     vr * A /vgris);
+        } else {
+            lut.at<Vec3b>(A) = Vec3b(255 + (A-255)*(vb-255)/(vgris-256),
+                                     255 + (A-255)*(vg-255)/(vgris-256),
+                                     255 + (A-255)*(vr-255)/(vgris-256));
+        }
+    }
+
+    Mat res;
+    LUT(gris, lut, res);
+    crear_nueva(nres, res);
+}
+
+//---------------------------------------------------------------------------
+
+void ver_pinchar_estirar(int nfoto, int nres, int cx, int cy, double grado, double radio, bool guardar){
+    Mat S(foto[nfoto].img.rows, foto[nfoto].img.cols, CV_32FC1);
+    double radio2 = radio * radio;
+    for (int y = 0; y < S.rows; y++){
+        for (int x = 0; x < S.cols; x++){
+            S.at<float>(y, x) = exp(-((x-cx)*(x-cx) + (y-cy)*(y-cy))/(radio2));
+        }
+    }
+
+    // imshow("S", S);
+
+    Mat Gx, Gy;
+    Sobel(S, Gx, CV_32F, 1, 0);
+    Sobel(S, Gy, CV_32F, 0, 1);
+
+    Mat MapaX(S.rows, S.cols, S.type());
+    Mat MapaY(S.rows, S.cols, S.type());
+
+    multiply(S, Gx, Gx, grado);
+    multiply(S, Gy, Gy, grado);
+
+    for (int y = 0; y < S.rows; y++){
+        for (int x = 0; x < S.cols; x++){
+            MapaX.at<float>(y,x) = x + Gx.at<float>(y,x);
+            MapaY.at<float>(y,x) = y + Gy.at<float>(y,x);
+        }
+    }
+
+    Mat res;
+    remap(foto[nfoto].img, res, MapaX, MapaY, INTER_CUBIC, BORDER_REFLECT);
+    imshow("Pinchar/estirar", res);
+    if(guardar)
+        crear_nueva(nres, res);
 }
 
 //---------------------------------------------------------------------------
