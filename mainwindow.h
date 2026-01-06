@@ -71,7 +71,7 @@ private slots:
     void on_actionCapturar_de_c_mara_triggered();
     void on_actionAjuste_lineal_del_histograma_triggered();
     void on_actionBajorrelieve_triggered();
-    void on_toolButton_9_clicked();
+    void on_toolButton_10_clicked();
     void on_actionArco_ris_triggered();
     void on_actionCapturar_de_v_deo_triggered();
     void on_actionStar_Wars_triggered();
@@ -80,6 +80,7 @@ private slots:
     void on_actionPerspectiva_triggered();
     void on_actionEscala_de_color_triggered();
     void on_actionPinchar_estirar_triggered();
+    void on_actionNueva_desde_el_portapapeles_triggered();
 };
 
 extern MainWindow *w;

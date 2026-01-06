@@ -22,8 +22,11 @@ using namespace cv;
 #include "matsatlum.h"
 #include "inpaint.h"
 #include "perspectiva.h"
+#include "bajorrelieve.h"
 
-#include <Bajorrelieve.h>
+#include <QClipboard>
+#include <QGuiApplication>
+#include <QMimeData>
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos WEBP (*.webp);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -428,7 +431,7 @@ void MainWindow::on_actionBajorrelieve_triggered()
 }
 
 
-void MainWindow::on_toolButton_9_clicked()
+void MainWindow::on_toolButton_10_clicked()
 {
     herr_actual = HER_ARCOIRIS;
 }
@@ -437,7 +440,7 @@ void MainWindow::on_toolButton_9_clicked()
 void MainWindow::on_actionArco_ris_triggered()
 {
     herr_actual = HER_ARCOIRIS;
-    ui->toolButton_9->setChecked(true);
+    ui->toolButton_10->setChecked(true);
 }
 
 
@@ -520,5 +523,12 @@ void MainWindow::on_actionPinchar_estirar_triggered()
     if (foto_activa() != -1 && primera_libre() != -1){
         ver_pinchar_estirar(foto_activa(), primera_libre(), 200, 300, difum_pincel * 10, radio_pincel);
     }
+}
+
+
+
+void MainWindow::on_actionNueva_desde_el_portapapeles_triggered()
+{
+
 }
 

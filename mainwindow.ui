@@ -362,7 +362,7 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QToolButton" name="toolButton_9">
+   <widget class="QToolButton" name="toolButton_10">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -372,11 +372,11 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="text">
-     <string>...</string>
+     <string/>
     </property>
     <property name="icon">
-     <iconset>
-      <normaloff>imagenes/arcoiris.png</normaloff>imagenes/arcoiris.png</iconset>
+     <iconset resource="recursos.qrc">
+      <normaloff>:/imagenes/arcoiris.png</normaloff>:/imagenes/arcoiris.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -398,7 +398,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArchivo">
@@ -409,6 +409,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionAbrir_imagen"/>
     <addaction name="actionCapturar_de_c_mara"/>
     <addaction name="actionCapturar_de_v_deo"/>
+    <addaction name="actionNueva_desde_el_portapapeles"/>
     <addaction name="separator"/>
     <addaction name="actionGuardar"/>
     <addaction name="actionGuardar_como"/>
@@ -746,6 +747,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionEscala_de_color">
    <property name="text">
     <string>Escala de color</string>
+   </property>
+  </action>
+  <action name="actionNueva_desde_el_portapapeles">
+   <property name="text">
+    <string>Nueva desde el portapapeles</string>
    </property>
   </action>
  </widget>
