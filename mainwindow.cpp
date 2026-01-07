@@ -24,6 +24,7 @@ using namespace cv;
 #include "perspectiva.h"
 #include "bajorrelieve.h"
 #include "pincharestirar.h"
+#include "rotaryreescalar.h"
 
 #include <QClipboard>
 #include <QGuiApplication>
@@ -612,5 +613,14 @@ void MainWindow::on_actionBalance_de_blancos_triggered()
 {
     if (foto_activa() != -1 && primera_libre() != -1)
         ver_balance_blancos(foto_activa(), primera_libre());
+}
+
+
+void MainWindow::on_actionRotar_imagen_y_reescalar_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1){
+        RotarYReescalar rr(foto_activa(), primera_libre(), this);
+        rr.exec();
+    }
 }
 

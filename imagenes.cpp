@@ -1020,6 +1020,19 @@ void ver_balance_blancos(int nfoto, int nres){
 
 //---------------------------------------------------------------------------
 
+void ver_rotar_y_reescalar(int nfoto, int nres, double angulo, double escala, bool guardar)
+{
+    Mat res;
+
+    rotar_angulo(foto[nfoto].img, res, angulo, escala, 1);
+    imshow("Rotar/Reescalar", res);
+    if(guardar)
+        crear_nueva(nres, res);
+}
+
+//---------------------------------------------------------------------------
+
+
 string Lt1(string cadena)
 {
     QString temp= QString::fromUtf8(cadena.c_str());

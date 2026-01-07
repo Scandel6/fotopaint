@@ -535,6 +535,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionMedia_ponderada"/>
     <addaction name="actionPerspectiva"/>
     <addaction name="actionEscala_de_color"/>
+    <addaction name="actionRotar_imagen_y_reescalar"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -834,6 +835,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionBalance_de_blancos">
    <property name="text">
     <string>Balance de blancos</string>
+   </property>
+  </action>
+  <action name="actionRotar_imagen_y_reescalar">
+   <property name="text">
+    <string>Rotar imagen y reescalar...</string>
    </property>
   </action>
  </widget>

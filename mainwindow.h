@@ -87,6 +87,7 @@ private slots:
     void on_actionTrazo_triggered();
     void on_toolButton_11_clicked();
     void on_actionBalance_de_blancos_triggered();
+    void on_actionRotar_imagen_y_reescalar_triggered();
 };
 
 extern MainWindow *w;

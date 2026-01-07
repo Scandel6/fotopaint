@@ -188,6 +188,9 @@ void ver_pinchar_estirar(int nfoto, int nres, int cx, int cy, double grado, doub
 void ver_balance_blancos(int nfoto, int nres);
 // Convertir la imagen de entrada a balance de blancos usando YUV
 
+void ver_rotar_y_reescalar(int nfoto, int nres, double angulo, double escala, bool guardar = false);
+// Rotar y reescalar una imagen
+
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1
 

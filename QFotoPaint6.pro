@@ -26,6 +26,7 @@ SOURCES += main.cpp\
     matsatlum.cpp \
     perspectiva.cpp \
     pincharestirar.cpp \
+    rotaryreescalar.cpp \
     starwars.cpp \
     suavizados.cpp \
     video.cpp \
@@ -45,6 +46,7 @@ HEADERS  += mainwindow.h \
     matsatlum.h \
     perspectiva.h \
     pincharestirar.h \
+    rotaryreescalar.h \
     starwars.h \
     suavizados.h \
     video.h \
@@ -63,6 +65,7 @@ FORMS    += mainwindow.ui \
     matsatlum.ui \
     perspectiva.ui \
     pincharestirar.ui \
+    rotaryreescalar.ui \
     starwars.ui \
     suavizados.ui \
     rotaravideo.ui \
