@@ -531,6 +531,86 @@ void MainWindow::on_actionPinchar_estirar_triggered()
 
 void MainWindow::on_actionNueva_desde_el_portapapeles_triggered()
 {
+    // Mirar https://doc.qt.io/qt-6/qclipboard.html
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    const QMimeData *mime = clipboard->mimeData();
 
+    if (mime->hasImage()) {
+        // Comprobar si hay hueco
+        int pl = comprobar_primera_libre();
+        if (pl != -1) {
+
+            QImage qimg = clipboard->image().convertToFormat(QImage::Format_RGB888);
+
+            // Convertir de QImage a Mat para crear_nueva
+            Mat mat_rgb(qimg.height(), qimg.width(), CV_8UC3, qimg.bits(), qimg.bytesPerLine());
+
+            Mat mat_bgr;
+            cvtColor(mat_rgb, mat_bgr, COLOR_RGB2BGR);
+
+            crear_nueva(pl, mat_bgr);
+            return;
+        }
+    }
+    QMessageBox::information(this, "Portapapeles", "No hay ninguna imagen en el portapapeles.");
+}
+
+
+void MainWindow::on_actionCopiar_al_portapapeles_triggered()
+{
+    int actual = foto_activa();
+
+    if (actual != -1){
+        // Usar roi de la imagen actual
+        Mat imagen = foto[actual].img;
+        Rect roi = foto[actual].roi;
+        Mat mat_roi = imagen(roi).clone();
+
+        if (mat_roi.empty())
+            return;
+
+        Mat mat_rgb;
+        cvtColor(mat_roi, mat_rgb, COLOR_BGR2RGB);
+
+        QImage qimg(mat_rgb.data, mat_rgb.cols, mat_rgb.rows, static_cast<int>(mat_rgb.step), QImage::Format_RGB888);
+
+        // Importante copiar para que persista en memoria tras salir de la función
+        QGuiApplication::clipboard()->setImage(qimg.copy());
+    } else {
+        QMessageBox::information(this, "Portapapeles", "No se ha podido guardar en el portapapeles.");
+    }
+}
+
+
+void MainWindow::on_actionSuavizado_triggered()
+{
+    herr_actual = HER_SUAVIZADO;
+    ui->toolButton_9->setChecked(true);
+}
+
+
+void MainWindow::on_toolButton_9_clicked()
+{
+    herr_actual = HER_SUAVIZADO;
+}
+
+
+void MainWindow::on_actionTrazo_triggered()
+{
+    herr_actual = HER_TRAZO;
+    ui->toolButton_11->setChecked(true);
+}
+
+
+void MainWindow::on_toolButton_11_clicked()
+{
+    herr_actual = HER_TRAZO;
+}
+
+
+void MainWindow::on_actionBalance_de_blancos_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1)
+        ver_balance_blancos(foto_activa(), primera_libre());
 }
 

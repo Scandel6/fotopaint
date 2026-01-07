@@ -19,5 +19,8 @@
         <file>imagenes/gris.jpg</file>
         <file>imagenes/madera.jpg</file>
         <file>imagenes/arcoiris.png</file>
+	<file>imagenes/blur.png</file>
+	<file>imagenes/pencil.png</file>
+
     </qresource>
 </RCC>

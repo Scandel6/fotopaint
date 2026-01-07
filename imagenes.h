@@ -40,7 +40,7 @@ struct ventana {
 //    Enumerado con los distintos tipos posibles de herramientas
 //    que se pueden usar. Añadir nuevas aquí
 
-enum tipo_herramienta {HER_PUNTO, HER_ARCOIRIS, HER_LINEA, HER_RECTANGULO, HER_ELIPSE, HER_SELECCION};
+enum tipo_herramienta {HER_PUNTO, HER_ARCOIRIS, HER_LINEA, HER_RECTANGULO, HER_ELIPSE, HER_SELECCION, HER_SUAVIZADO, HER_TRAZO};
 
 
 ///////////////////////////////////////////////////////////////////
@@ -184,6 +184,9 @@ void escala_color(int nfoto, int nres);
 
 void ver_pinchar_estirar(int nfoto, int nres, int cx, int cy, double grado, double radio, bool guardar = false);
 // Efecto de pinchar estirar
+
+void ver_balance_blancos(int nfoto, int nres);
+// Convertir la imagen de entrada a balance de blancos usando YUV
 
 string Lt1(string cadena);
 // Convertir una cadena de UTF8 a Latin1

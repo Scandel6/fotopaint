@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <assert.h>
+#include <vector>
 
 ///////////////////////////////////////////////////////////////////
 /////////  VARIABLES GLOBALES                        //////////////
@@ -216,6 +217,50 @@ void activar_callback_fotos (bool activo)
 }
 
 ///////////////////////////////////////////////////////////////////
+/////////  FUNCIONES AUXILIARES                      //////////////
+///////////////////////////////////////////////////////////////////
+
+void aux_pintar_segmento(Mat& im, Point p1, Point p2, Scalar color)
+{
+    if (difum_pincel == 0) {
+        line(im, p1, p2, color, radio_pincel * 2 + 1, LINE_AA);
+        return;
+    }
+
+    // Dar un poco de margen
+    int margen = radio_pincel + difum_pincel + 2;
+
+    int x_min = min(p1.x, p2.x) - margen;
+    int y_min = min(p1.y, p2.y) - margen;
+    int x_max = max(p1.x, p2.x) + margen;
+    int y_max = max(p1.y, p2.y) + margen;
+    Rect roi(x_min, y_min, x_max - x_min, y_max - y_min);
+
+    roi = roi & Rect(0, 0, im.cols, im.rows); // https://docs.opencv.org/4.10.0/d2/d44/classcv_1_1Rect__.html intersección
+
+    if (roi.empty()) return;
+
+    Mat trozo = im(roi);
+
+    Point p1_local = p1 - roi.tl();
+    Point p2_local = p2 - roi.tl();
+
+    // Lógica original
+    Mat res(trozo.size(), im.type(), color);
+    Mat cop(trozo.size(), im.type(), CV_RGB(0,0,0)); // Fondo negro
+
+    line(cop, p1_local, p2_local, color, radio_pincel * 2 + 1, LINE_AA);
+
+    blur(cop, cop, Size(difum_pincel * 2 + 1, difum_pincel * 2 + 1));
+
+    multiply(res, cop, res, 1.0/255.0);
+    bitwise_not(cop, cop);
+    multiply(trozo, cop, trozo, 1.0/255.0);
+
+    trozo = res + trozo;
+}
+
+///////////////////////////////////////////////////////////////////
 /////////  FUNCIONES DEL CALLBACK PRINCIPAL          //////////////
 ///////////////////////////////////////////////////////////////////
 
@@ -257,28 +302,13 @@ void cb_punto (int factual, int x, int y, Scalar color)
         circle(im, Point(x, y), radio_pincel, color, -1, LINE_AA);
     else {
         int tam = radio_pincel + difum_pincel;
-        int posx = tam, posy = tam;
         Rect roi(x-tam, y-tam, 2 * tam + 1, 2 * tam + 1);
 
-        if (roi.x < 0){
-            roi.width += roi.x;
-            posx += roi.x;
-            roi.x = 0;
-        }
+        roi = roi & Rect(0, 0, im.cols, im.rows);
 
-        if (roi.y < 0){
-            roi.height += roi.y;
-            posy += roi.y;
-            roi.y = 0;
-        }
+        if (roi.empty()) return;
 
-        if (roi.x + roi.width > im.cols){
-            roi.width = im.cols - roi.x;
-        }
-
-        if (roi.y + roi.height > im.rows){
-            roi.height = im.rows - roi.y;
-        }
+        int posx = x - roi.x, posy = y - roi.y;
 
         Mat trozo = im(roi);
 
@@ -300,18 +330,9 @@ void cb_punto (int factual, int x, int y, Scalar color)
 void cb_linea (int factual, int x, int y)
 {
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
-    if (difum_pincel==0)
-        line(im, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2+1);
-    else {
-        Mat res(im.size(), im.type(), color_pincel);
-        Mat cop(im.size(), im.type(), CV_RGB(0,0,0));
-        line(cop, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2+1);
-        blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
-        multiply(res, cop, res, 1.0/255.0);
-        bitwise_not(cop, cop);
-        multiply(im, cop, im, 1.0/255.0);
-        im= res + im;
-    }
+
+    aux_pintar_segmento(im, Point(downx, downy), Point(x, y), color_pincel);
+
     imshow(foto[factual].nombre, im);
     foto[factual].modificada= true;
 }
@@ -356,6 +377,38 @@ void cb_elipse (int factual, int x, int y)
     }
     imshow(foto[factual].nombre, im);
     foto[factual].modificada= true;
+}
+
+//---------------------------------------------------------------------------
+
+void cb_suavizado(int factual, int x, int y)
+{
+    Mat im = foto[factual].img;
+
+    int tam_matriz = difum_pincel + 1; // Evitar 0
+    if (tam_matriz % 2 == 0)
+        tam_matriz += 1; // Siempre tiene que ser impar
+
+    Rect roi(x - radio_pincel, y - radio_pincel, 2 * radio_pincel, 2 * radio_pincel);
+
+    roi = roi & Rect(0, 0, im.cols, im.rows);
+
+    if(roi.empty())
+        return;
+
+    Mat trozo = im(roi);
+    Mat borrosa;
+
+    GaussianBlur(trozo, borrosa, Size(tam_matriz, tam_matriz), 0);
+
+    Mat cir(roi.size(), CV_8UC1, Scalar(0));
+    circle(cir, Point(x - roi.x, y - roi.y), radio_pincel, Scalar(255), -1, LINE_AA); // -1 rellenar
+
+    // Devolver cambios a original
+    borrosa.copyTo(trozo, cir);
+
+    imshow(foto[factual].nombre, im);
+    foto[factual].modificada = true;
 }
 
 //---------------------------------------------------------------------------
@@ -422,6 +475,38 @@ void cb_ver_seleccion (int factual, int x, int y, bool foto_roi)
     }
     rectangle(res, p1, p2, CV_RGB(255,foto_roi?0:255,0),2);
     imshow(foto[factual].nombre, res);
+}
+
+//---------------------------------------------------------------------------
+
+void cb_trazo(int factual, int x, int y, int event, int flags)
+{
+    static int x_anterior = -1;
+    static int y_anterior = -1;
+
+    if (event == EVENT_LBUTTONDOWN){
+        x_anterior = x;
+        y_anterior = y;
+        cb_punto(factual, x, y, color_pincel);
+    } else if(event == EVENT_MOUSEMOVE && (flags & EVENT_FLAG_LBUTTON)){
+        Mat im = foto[factual].img;
+
+        if (x_anterior == -1){
+            x_anterior = x;
+            y_anterior = y;
+        }
+
+        aux_pintar_segmento(im, Point(x_anterior, y_anterior), Point(x, y), color_pincel);
+
+        imshow(foto[factual].nombre, im);
+        foto[factual].modificada = true;
+
+        x_anterior = x;
+        y_anterior = y;
+    } else if(event == EVENT_LBUTTONUP){
+        x_anterior = -1;
+        y_anterior = -1;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -509,6 +594,17 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             cb_seleccionar(factual, x, y);
         else if (event==EVENT_MOUSEMOVE)
             cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
+        break;
+    // 2.7. Herramienta SUAVIZADO
+    case HER_SUAVIZADO:
+        if (flags==EVENT_FLAG_LBUTTON && event!=EVENT_LBUTTONUP)
+            cb_suavizado(factual, x, y);
+        else
+            ninguna_accion(factual, x, y);
+        break;
+    // 2.8. Herramienta TRAZO
+    case HER_TRAZO:
+        cb_trazo(factual, x, y, event, flags);
         break;
     }
     escribir_barra_estado();
@@ -893,6 +989,33 @@ void ver_pinchar_estirar(int nfoto, int nres, int cx, int cy, double grado, doub
     imshow("Pinchar/estirar", res);
     if(guardar)
         crear_nueva(nres, res);
+}
+
+//---------------------------------------------------------------------------
+
+void ver_balance_blancos(int nfoto, int nres){
+    Mat yuv;
+
+    cvtColor(foto[nfoto].img, yuv, COLOR_BGR2YUV);
+
+    vector<Mat> canales;
+    split(yuv, canales);
+
+    double media_u = mean(canales[1])[0];
+    double media_v = mean(canales[2])[0];
+
+    double dif_u = 128.0 - media_u;
+    double dif_v = 128.0 - media_v;
+
+    add(canales[1], Scalar(dif_u), canales[1]);
+    add(canales[2], Scalar(dif_v), canales[2]);
+
+    merge(canales, yuv);
+
+    Mat res;
+    cvtColor(yuv, res, COLOR_YUV2BGR);
+
+    crear_nueva(nres, res);
 }
 
 //---------------------------------------------------------------------------

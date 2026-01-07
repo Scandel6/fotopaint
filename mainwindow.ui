@@ -391,6 +391,64 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QToolButton" name="toolButton_9">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>0</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/imagenes/blur.png</normaloff>:/imagenes/blur.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="toolButton_11">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>0</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/imagenes/pencil.png</normaloff>:/imagenes/pencil.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -439,6 +497,7 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="actionSeleccionar_todo"/>
     <addaction name="actionCopiar_a_nueva"/>
+    <addaction name="actionCopiar_al_portapapeles"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
     <addaction name="menuVer_histograma"/>
@@ -451,8 +510,10 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionArco_ris"/>
     <addaction name="actionLinea"/>
     <addaction name="actionRect_ngulo"/>
-    <addaction name="actionSeleccionar"/>
     <addaction name="actionElipse"/>
+    <addaction name="actionSeleccionar"/>
+    <addaction name="actionSuavizado"/>
+    <addaction name="actionTrazo"/>
    </widget>
    <widget class="QMenu" name="menuTransformar">
     <property name="title">
@@ -491,6 +552,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionBajorrelieve"/>
     <addaction name="actionPinchar_estirar"/>
     <addaction name="actionInpaint"/>
+    <addaction name="actionBalance_de_blancos"/>
    </widget>
    <widget class="QMenu" name="menuV_deo">
     <property name="title">
@@ -752,6 +814,26 @@ p, li { white-space: pre-wrap; }
   <action name="actionNueva_desde_el_portapapeles">
    <property name="text">
     <string>Nueva desde el portapapeles</string>
+   </property>
+  </action>
+  <action name="actionCopiar_al_portapapeles">
+   <property name="text">
+    <string>Copiar al portapapeles</string>
+   </property>
+  </action>
+  <action name="actionSuavizado">
+   <property name="text">
+    <string>Suavizado</string>
+   </property>
+  </action>
+  <action name="actionTrazo">
+   <property name="text">
+    <string>Trazo</string>
+   </property>
+  </action>
+  <action name="actionBalance_de_blancos">
+   <property name="text">
+    <string>Balance de blancos</string>
    </property>
   </action>
  </widget>
