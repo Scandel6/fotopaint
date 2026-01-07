@@ -23,6 +23,7 @@ using namespace cv;
 #include "inpaint.h"
 #include "perspectiva.h"
 #include "bajorrelieve.h"
+#include "pincharestirar.h"
 
 #include <QClipboard>
 #include <QGuiApplication>
@@ -521,7 +522,8 @@ void MainWindow::on_actionEscala_de_color_triggered()
 void MainWindow::on_actionPinchar_estirar_triggered()
 {
     if (foto_activa() != -1 && primera_libre() != -1){
-        ver_pinchar_estirar(foto_activa(), primera_libre(), 200, 300, difum_pincel * 10, radio_pincel);
+        PincharEstirar pe(foto_activa(), primera_libre(), this);
+        pe.exec();
     }
 }
 
